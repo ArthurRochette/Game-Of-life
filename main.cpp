@@ -26,18 +26,22 @@ void draw(sf::RenderWindow *window);
 
 void fullFill();
 
+void resetArray();
+
 bool arraytest[] = {false, true, false, false};
+
 
 std::vector <sf::Sprite> sprites;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "Game of life");
     sf::Clock clock;
-    sf::Time elapsed = sf::Time::Zero;
+    float elapsed = 0.0f;
+
     arraySizeX = WINDOW_SIZE_X / 4;
     arraySizeY = WINDOW_SIZE_Y / 4;
     array = new bool[arraySizeX * arraySizeY];
-
+    resetArray();
     fullFill();
     int nbr;
     while (window.isOpen()) {
@@ -47,20 +51,37 @@ int main() {
                 window.close();
                 return 0;
             }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::R) {
+                    resetArray();
+                    fullFill();
+                }
+            }
         }
-        if (elapsed >= sf::seconds(1.0f)) {
-            elapsed = sf::Time::Zero;
+        if (elapsed >= 2.0f) {
+            elapsed = 0.0f;
+            clock.restart();
             std::cout << "$$$$$$$$$$a second" << std::endl;
             window.clear(sf::Color::Black);
-
+            draw(&window);
             lifeChecker();
         }
-        draw(&window);
-        elapsed = clock.getElapsedTime();
+
+
+        elapsed = clock.getElapsedTime().asSeconds();
+
 
     }
     //draw array
     return 0;
+}
+
+void resetArray() {
+    for (int y = 0; y < arraySizeY; y++) {
+        for (int x = 0; x < arraySizeX; x++) {
+            array[x + y * arraySizeY] = false;
+        }
+    }
 }
 
 void fullFill() {
@@ -75,25 +96,27 @@ void fullFill() {
 }
 
 void draw(sf::RenderWindow *window) {
-    //lire array
-    sf::RectangleShape rec(sf::Vector2f(2, 2));
 
+    //lire array
+    sf::RectangleShape rec(sf::Vector2f(3, 3));
     rec.setFillColor(sf::Color::White);
+
 
     for (int y = 0; y < arraySizeY; y++) {
         for (int x = 0; x < arraySizeX; x++) {
             if (array[x + y * arraySizeY]) {
-                rec.setPosition(x, y);
+                rec.setPosition(x * 4 + 0.5, y * 4 + 0.5);
                 window->draw(rec);
-                std::cout << "1";
+                window->display();
+                //std::cout << "1";
 
             } else {
-                std::cout << "0";
+                //std::cout << "0";
             }
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
     }
-    std::cout << std::endl << std::endl;
+    //std::cout << std::endl << std::endl;
     //donner pour chaque valeur true un carré de position correspondante
 }
 
