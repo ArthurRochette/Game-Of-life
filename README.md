@@ -1,4 +1,4 @@
-Game Of life
+# Game Of life
 
 ![game of life picture](https://raw.githubusercontent.com/ArthurSenpaii/Game-Of-life/main/gol.png)
 
