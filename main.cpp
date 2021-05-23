@@ -11,8 +11,8 @@
  * si une cellule vivante possede deux ou trois voisines vivantes elle le reste, sinon non
  * */
 
-const int WINDOW_SIZE_X = 200;
-const int WINDOW_SIZE_Y = 200;
+const int WINDOW_SIZE_X = 800;
+const int WINDOW_SIZE_Y = 800;
 //TODO: on modifie le tableau en temps reel, ne faudrait
 // il pas faire une copie du tableau pour creer le nouveau a partir d'une version static de l'ancien ??
 bool *array;
@@ -58,14 +58,11 @@ int main() {
                 }
             }
         }
-        if (elapsed >= 2.0f) {
-            elapsed = 0.0f;
-            clock.restart();
-            std::cout << "$$$$$$$$$$a second" << std::endl;
-            window.clear(sf::Color::Black);
-            draw(&window);
-            lifeChecker();
-        }
+        elapsed = 0.0f;
+        clock.restart();
+        window.clear(sf::Color::Black);
+        draw(&window);
+        lifeChecker();
 
 
         elapsed = clock.getElapsedTime().asSeconds();
@@ -85,6 +82,7 @@ void resetArray() {
 }
 
 void fullFill() {
+    std::cout << "FullFill commence" << std::endl;
     std::srand(std::time(nullptr));
     for (int y = 0; y < arraySizeY; y++) {
         for (int x = 0; x < arraySizeX; x++) {
@@ -93,23 +91,21 @@ void fullFill() {
             }
         }
     }
+    std::cout << "FullFill termine" << std::endl;
 }
 
 void draw(sf::RenderWindow *window) {
-
+    std::cout << "Draw commence" << std::endl;
     //lire array
     sf::RectangleShape rec(sf::Vector2f(3, 3));
     rec.setFillColor(sf::Color::White);
-
 
     for (int y = 0; y < arraySizeY; y++) {
         for (int x = 0; x < arraySizeX; x++) {
             if (array[x + y * arraySizeY]) {
                 rec.setPosition(x * 4 + 0.5, y * 4 + 0.5);
-                window->draw(rec);
-                window->display();
                 //std::cout << "1";
-
+                window->draw(rec);
             } else {
                 //std::cout << "0";
             }
@@ -118,9 +114,13 @@ void draw(sf::RenderWindow *window) {
     }
     //std::cout << std::endl << std::endl;
     //donner pour chaque valeur true un carré de position correspondante
+
+    window->display();
+    std::cout << "Draw termine" << std::endl;
 }
 
 void lifeChecker() {
+    std::cout << "LifeCheck commence" << std::endl;
     bool *buffer = new bool[arraySizeX * arraySizeY];
     for (int y = 0; y < arraySizeY; y++) {
         for (int x = 0; x < arraySizeX; x++) {
@@ -142,9 +142,11 @@ void lifeChecker() {
     }
     delete array;
     array = buffer;
+    std::cout << "LifeCheck termine" << std::endl;
 }
 
 int neighborCount(int x, int y) {
+    std::cout << "neighborc commence" << std::endl;
     int neighbor = 0;
     if ((x != arraySizeX - 1 && x != 0) && (y != arraySizeY - 1 && y != 0)) {// case where square isn't in a limit
         if (array[(x + 1) + y * arraySizeY]) {//right
@@ -271,6 +273,7 @@ int neighborCount(int x, int y) {
             neighbor++;
         }
     }
+    std::cout << "neighborc termine" << std::endl;
     return neighbor;
 }
 
