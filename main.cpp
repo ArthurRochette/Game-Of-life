@@ -3,18 +3,9 @@
 #include <SFML/Window.hpp>
 #include <vector>
 
-//Ration 4 pxl -> 1 case tableau
-
-//regle
-/*
- * si une cellule morte est entourer de 3 cellules en vie -> elle prend vie
- * si une cellule vivante possede deux ou trois voisines vivantes elle le reste, sinon non
- * */
-
 const int WINDOW_SIZE_X = 800;
 const int WINDOW_SIZE_Y = 800;
-//TODO: on modifie le tableau en temps reel, ne faudrait
-// il pas faire une copie du tableau pour creer le nouveau a partir d'une version static de l'ancien ??
+
 bool *array;
 int arraySizeX, arraySizeY;
 
@@ -110,10 +101,8 @@ void draw(sf::RenderWindow *window) {
                 //std::cout << "0";
             }
         }
-        //std::cout << std::endl;
     }
-    //std::cout << std::endl << std::endl;
-    //donner pour chaque valeur true un carré de position correspondante
+
 
     window->display();
     std::cout << "Draw termine" << std::endl;
